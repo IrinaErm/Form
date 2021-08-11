@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <title>
+            Форма
+        </title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <div class="container-fluid d-flex justify-content-center align-items-center container ">
+            <div class="w-75 p-4 row justify-content-center">
+                <h1 class="text-center"> Связаться с нами </h1>
+
+                <form action="php/addInfo.php" method="POST" enctype="multipart/form-data" id="myform" class="p-2 form-inline justify-content-center border-bottom border-secondary needs-validation" novalidate>
+                    <label for="fname"> Фамилия: <span style="color:red; font-size: 1.5em">*</span> </label> <br> <input type="text" pattern="[\S\s]*\S[\S\s]*" class="form-control" id="fname" name="fname" required>
+                    <div class="invalid-feedback">
+                        Пожалуйста, введите вашу фамилию.
+                    </div>
+                    <br>
+                    <label for="name"> Имя: <span style="color:red; font-size: 1.5em">*</span> </label> <br> <input type="text" pattern="[\S\s]*\S[\S\s]*" class="form-control" id="name" name="name" required>
+                    <div class="invalid-feedback">
+                        Пожалуйста, введите ваше имя.
+                    </div>
+                    <br>
+                    <label for="lname"> Отчество: </label> <br> <input type="text" class="form-control" id="lname" name="lname"> <br>     
+                    
+                    <label> Пол: <span style="color:red; font-size: 1.5em">*</span> </label> <br>  
+                    <div class="form-check">   
+                        <label for="female" class="form-check-label"> <input type="radio" class="form-check-input" id="female" name="gender" value="1" required> Женский </label> <br>
+                        <label for="male" class="form-check-label"> <input type="radio" class="form-check-input" id="male" name="gender" value="2"> Мужской </label>
+                    </div>
+                    <div class="invalid-feedback">
+                        Пожалуйста, укажите ваш пол.
+                    </div>
+
+                    <label class="mt-4" for="email">Почта: <span style="color:red; font-size: 1.5em">*</span> </label> <input type="email" class="form-control" id="email" name="email" required>
+                    <div class="invalid-feedback">
+                        Пожалуйста, укажите вашу почту.
+                    </div> <br>
+
+                    <label for="checkboxes"> Имею опыт работы с: </label> <br>
+                    <div id="checkboxes" class="mb-4">
+                        <input type="checkbox" id="experience1" name="experience[]" value="PHP">
+                        <label for="experience1"> PHP</label> <br>
+                        <input type="checkbox" id="experience2" name="experience[]" value="HTML">
+                        <label for="experience2"> HTML </label> <br>
+                        <input type="checkbox" id="experience3" name="experience[]" value="CSS">
+                        <label for="experience3"> CSS </label>
+                    </div>
+
+                    <label for="city"> Интересует филиал в городе: </label>
+                    <select id="city" class="form-select" name="city">
+                        <option value="1">Самара</option>
+                        <option value="2" selected>Ульяновск</option>
+                        <option value="3">Казань</option>
+                    </select> <br>
+                    
+                    <label for="file">Резюме:</label> <input type="file" class="mb-4 form-control-file" id="file" name="file"> <br>
+                    
+                    <label for="info">Дополнительная информация: </label> <br>
+                        <textarea class="form-control" name="info" id="info"></textarea> <br>
+            
+                    <div id="good_alert" class="alert alert-success text-center" role="alert"> Форма отправлена! </div>
+                    <div id="empty_alert" class="alert alert-danger text-center" role="alert"> Пожалуйста, заполните обязательные поля (со звездочкой). </div>
+                    <div id="bad_alert" class="alert alert-danger text-center" role="alert"> При отправке формы произошла ошибка. </div> <br>
+                    <div class="d-flex justify-content-center">
+                        <input type="submit" class="m-1 btn btn-outline-success my-1" value="Отправить">                       
+                        <input type="reset" class="m-1 btn btn-light" value="Сбросить" onclick="hideAlerts();">
+                    </div>
+                </form>
+                
+                <div class="mt-4 d-flex justify-content-center">
+                    <form action="login.php">
+                        <input type="submit" class="btn btn-outline-success" value="Войти">
+                    </form>                  
+                </div>                           
+            </div>
+        </div>
+
+    </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    
+    <script>
+        $('.alert').hide();
+        (function () {
+            'use strict'
+
+            var forms = document.querySelectorAll('.needs-validation')
+
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                        $('.alert').hide();
+                    }
+                    else {                       
+                        event.preventDefault();
+
+                        var formData = $('#myform')[0];
+                        var formData = new FormData(formData);
+
+                        $.ajax({
+                            type: 'POST',                                                      
+                            enctype: 'multipart/form-data',
+                            url: 'php/addInfo.php',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            cache: false,
+                            success: function(data){
+                                if(data == 'success') {
+                                    $('#good_alert').show();
+                                }
+                                else if(data == 'empty') {                                 
+                                    $('#empty_alert').show();
+                                }
+                                else {
+                                    $('#bad_alert').show();
+                                }
+                            }
+                        });                     
+                    }
+
+                    form.classList.add('was-validated');
+                    $('.alert').hide();
+                }, false)
+                })
+        })()
+    </script>   
+
+    <script>
+        function hideAlerts() {
+            $('.alert').hide();
+        }
+    </script>
+</html>

@@ -1,4 +1,5 @@
-<?php 
+<?php
+ 
     require_once("php/getInfo.php"); 
     session_start(); 
 
